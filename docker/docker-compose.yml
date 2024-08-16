@@ -3,24 +3,45 @@ services:
   app1:
     image: natanielpaiva/exemplo-image-springboot-local:latest
     container_name: app1
+    environment:
+      - SERVER_PORT=8080
+      - DB_HOST=db
     ports:
       - "8081:8080"
     deploy:
       resources:
         limits:
-          cpus: '1.60'
-          memory: '3GB'
-
+          cpus: '0.35'
+          memory: '0.9GB'
+    depends_on:
+      - db
   app2:
     image: natanielpaiva/exemplo-image-springboot-local:latest
     container_name: app2
+    environment:
+      - SERVER_PORT=8080
+      - DB_HOST=db
     ports:
       - "8082:8080"
     deploy:
       resources:
         limits:
-          cpus: '1.60'
-          memory: '3GB'
+          cpus: '0.35'
+          memory: '0.9GB'
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: Java1234
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.65'
+          memory: '1.0GB'
 
   nginx:
     image: nginx-custom:latest
@@ -37,4 +58,4 @@ services:
       resources:
         limits:
           cpus: '0.15'
-          memory: '0.5GB'
+          memory: '0.3GB'
