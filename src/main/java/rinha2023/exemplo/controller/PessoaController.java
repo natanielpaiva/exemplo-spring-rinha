@@ -44,13 +44,13 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> buscarPessoas(@RequestParam(required = false) String t) {
+    public ResponseEntity<?> buscarPessoas(@RequestParam(required = false) String t) {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("nome").ascending());
 
         Page<Pessoa> pessoas;
         if (t == null || t.isBlank()) {
-            pessoas = pessoaRepository.findAll(pageable);
+            return ResponseEntity.badRequest().body("");
         } else {
             pessoas = pessoaRepository.findByApelidoContainingIgnoreCaseOrNomeContainingIgnoreCaseOrStackContainingIgnoreCase(t, t, t, pageable);
         }
